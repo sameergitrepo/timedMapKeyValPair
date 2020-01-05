@@ -5,12 +5,14 @@ import (
 	"time"
 )
 
+type TimeMap map[string]*time.Timer
+
 func main() {
-	timemap := make(map[string]*time.Timer)
+	timemap := make(TimeMap, 0)
 
 	fmt.Print("\n1. adding a key ")
 	timemap["name1"] = time.NewTimer(time.Second * 10)
-	go Delete(timemap, timemap["name1"].C, "name1")
+	go timemap.Delete(timemap["name1"].C, "name1")
 	fmt.Print("\n 2. adding second key..")
 	timemap["name2"] = time.NewTimer(time.Second * 10)
 	fmt.Print("\n adding third key..")
@@ -24,7 +26,12 @@ func main() {
 	fmt.Print("\n length of map is ", len(timemap))
 }
 
-func Delete(timemap map[string]*time.Timer, timech <-chan time.Time, key string) {
+func (m TimeMap) Delete(timech <-chan time.Time, key string) {
 	<-timech
-	delete(timemap, key)
+	delete(m, key)
+}
+
+func (m TimeMap) AddToMap(key string, timervalinsec int) {
+	m[key] = time.NewTimer(time.Second * time.Duration(timervalinsec))
+	go m.Delete(m[key].C, key)
 }
