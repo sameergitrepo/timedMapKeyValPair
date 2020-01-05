@@ -10,7 +10,7 @@ func main() {
 
 	fmt.Print("\n1. adding a key ")
 	timemap["name1"] = time.NewTimer(time.Second * 10)
-	go Delete(timemap, timemap["name1"].C)
+	go Delete(timemap, timemap["name1"].C, "name1")
 	fmt.Print("\n 2. adding second key..")
 	timemap["name2"] = time.NewTimer(time.Second * 10)
 	fmt.Print("\n adding third key..")
@@ -24,6 +24,7 @@ func main() {
 	fmt.Print("\n length of map is ", len(timemap))
 }
 
-func Delete(timech <-chan time.Time) {
-	delete
+func Delete(timemap map[string]*time.Timer, timech <-chan time.Time, key string) {
+	<-timech
+	delete(timemap, key)
 }
