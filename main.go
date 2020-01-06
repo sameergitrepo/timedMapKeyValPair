@@ -24,6 +24,7 @@ func main() {
 	fmt.Print("\n length of map after sleeping for 5 seconds is ..")
 	time.Sleep(time.Second * 5)
 	fmt.Print("\n final length of map is ", len(timemap))
+
 }
 
 func (m TimeMap) Delete(timech <-chan time.Time, key string) {
